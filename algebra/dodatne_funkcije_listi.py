@@ -44,3 +44,51 @@ print("Brojevi nakon extend")
 for i in brojevi:
     print(i, end=" ")
 print("\n")
+
+### index ###
+brojevi_index = brojevi.index(15)
+print("Indeks prvog pojavljivanja broja 15 u listi je", brojevi_index)
+print(f"Vrijednost u listi brojevi na indeksu 15 je {brojevi[brojevi_index]}")
+print()
+
+### INSERT###
+print("Ispis liste brojevi PRIJE insert() naredbe")
+for broj in brojevi:
+    print(broj, end=" ")
+print()
+brojevi.insert(15, "Ispred 15-ice")
+print("Ispis liste brojevi NAKON insert() naredbe")
+for broj in brojevi:
+    print(i, end=" ")
+    print("\n")
+
+### REVERSE###
+print("Ispis brojevi PRIJE reverse():")
+for i in brojevi:
+    print(i, end=" ")
+print("\n")
+
+brojevi.reverse()
+print("Ispis brojevi NAKON reverse():")
+for i in brojevi:
+    print(i, end=" ")
+print("\n")
+
+### SORT###
+rijeci = ["python", "program", "ruby", "java"]
+print("Ispis rijeci prije sort():")
+for rijec in rijeci:
+    print(rijec, end=" ")
+print("\n")
+
+rijeci.sort()
+print("Ispis rijeci nakon sort():")
+for rijec in rijeci:
+    print(rijec, end=" ")
+print("\n")
+
+rijeci.sort(reverse=True)  # sortiraj obrnuto
+print("Ispis rijeci nakon sort(reverse):")
+for rijec in rijeci:
+    print(rijec, end=" ")
+print("\n")
