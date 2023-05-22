@@ -25,18 +25,12 @@ vozila = {
     ]
 }
 
-# header table row
-header_top_line = f"ID\tTip\tProizvodac\tRegistracijska\t\tGodina\t\tCijena"
-header_bottom_line = f"\t   \t            \toznaka   \t\tregistracije\tEUR"
-header_under_line = "_" * 105
-
-print(header_top_line)
-print(header_bottom_line)
-print(header_under_line)
-
-# body table rows
+### CLEAR###
+print()
+print("Ispis prije clear()")
 for kljuc, vrijednost in vozila.items():
-    print(f'{kljuc}', end='\t')
+    print(kljuc, end="\t")
     for element in vrijednost:
-        print(f'{element}', end='\t\t')
+        print(element, end="\t")
     print()
+print()
