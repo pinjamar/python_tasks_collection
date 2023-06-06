@@ -1,57 +1,40 @@
-# Napisati program koji kreira akorde na osnovu početnog akorda
+# ZADATAK: Napisati program koji kreira akorde na osnovu početnog tona
 
 # Glazbena abeceda: C, C#, D, D#, E, F, F#, G, G#, A, A#, H
 
 # Durski akord čine: početni ton, 4. ton te 7. ton.
-# Označava se samo velikim slovom početnog akorda ili velikim slovom početnog akorda uz dodatak dur
-
+        # Označava se samo velikim slovom početnog tona ili velikim slovom početnog tona uz dodatak dur
+        # G# - simbol akorda je G# ili G#
 # Molski akord čine: početni ton, 3. ton te 7. ton.
-# Označava se samo malim slovom početnog akorda ili malim slovom početnog akorda uz dodatak mol
+        # Označava se samo malim slovom početnog tona ili malim slovom početnog tona uz dodatak mol
+        # G# - simbol akorda je g# ili g#
 
-tonovi = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "H"]
+tonovi = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'H']
 
-prvi_ton = input("Unesi pocetni ton: ")
+print('\nLista svih tonova od tona C:')
+for ton in tonovi:
+    print(ton, end = ' ')
+print('\n')
 
-prvi_index = tonovi.index(prvi_ton)
+pocetni_ton = input('Unesite početni ton akorda:\t')
 
-drugi_index_dur = (prvi_index + 4) % len(tonovi)
+tonovi.extend(tonovi)
 
-treci_index_dur = (drugi_index_dur + 3) % len(tonovi)
+indeks_pocetnog_tona = tonovi.index(pocetni_ton)
 
-print("Durski akord:")
-print(tonovi[prvi_index], end=" ")
-print(tonovi[drugi_index_dur], end=" ")
-print(tonovi[treci_index_dur])
+print(f'\nDurski akord {pocetni_ton} tona čine:\n'
+      f'\t{pocetni_ton} kao prvi ton,\n'
+      f'\t{tonovi[indeks_pocetnog_tona + 4]} kao 4. ton te\n'
+      f'\t{tonovi[indeks_pocetnog_tona + 7]} kao 7. ton.\n'
+      f'\tSimbol akorda je: {pocetni_ton} ili {pocetni_ton} dur\n')
 
-
-drugi_index_mol = (prvi_index + 3) % len(tonovi)
-
-treci_index_mol = (drugi_index_mol + 4) % len(tonovi)
-
-print("Molski akord:")
-print(tonovi[prvi_index], end=" ")
-print(tonovi[drugi_index_mol], end=" ")
-print(tonovi[treci_index_mol])
+print(f"Molski akord od {pocetni_ton}:\n"
+      f"\t{pocetni_ton} kao prvi ton, \n"
+      f"\t{tonovi[indeks_pocetnog_tona + 3]} kao 3. ton\n"
+      f"\t{tonovi[indeks_pocetnog_tona + 7]} kao 7. ton.\n"
+      f"\tSimbol akorda je: {pocetni_ton.lower()} ili {pocetni_ton.lower()} mol\n")
 
 
-# ALTERNATIVE
 
-akordi = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "H"]
 
-print("\nLista svih akorda od akorda C:")
-for i in akordi:
-    print(i, end=" ")
 
-print()
-
-pocetni_akord = input("Unesite pocetni akord:\t")
-
-akordi.extend(akordi)
-
-indeks_pocetnog_akorda = akordi.index(pocetni_akord)
-
-print(f"\nDurski akord {pocetni_akord} cine:\n"
-      f"\t{pocetni_akord} kao prvi akord,\n"
-      f"\t{akordi[indeks_pocetnog_akorda + 4]} kao 4. akord te\n"
-      f"\t{akordi[indeks_pocetnog_akorda + 7]} kao 7. akord\n"
-      f"\tSimbol akorda je: {pocetni_akord} ili {pocetni_akord} dur\n")
