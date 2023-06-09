@@ -1,119 +1,105 @@
-# igra vjesala
-# racunalo ce odabrati nasumicnu rijec iz rjecnika
-# igrac poksuava pogoditi slova koja sadri ta rijec
+# Igra vješala
+# Računalo će odabrati nasumičnu riječ iz rječnika
+# Igrač pokušava pogoditi slova koja sadrži ta riječ
 
-# iskoristit cemo do sad nauceno: liste, rjecnici, if, while, for...
+# Iskoristit ćemo do sad naučeno: liste, rječnici, if, while, for...
 
-# upute: logika igre je takva da mi testiramo duzinu rijeci koju korisnik mora pogoditi
-# ako pogodimo slovo maknut cemo ga iz rijeci koju pogadamo i tada se smanjuje duljina te rijeci
-# ako promasimo smanjit ce nam se broj zivota / povecati broj pokusaja
-# igra je gotova kad duzina rijeci postane 0 ili ostanemo bez zivota
+# UPUTE: Logika igre je takva da mi testiramo dužinu riječi koju korisnik mora pogoditi.
+# Ako pogodimo slovo maknut ćemo ga iz riječi koju pogađamo i tada se smanjuje duljina te riječi, 
+# ako promašimo smanjit će nam se broj života / povećati broj pokušaja
+# Igra je gotova kad dužina riječi postane 0 ili ostanemo bez života!!
 
 import random
+
 vjesalo = {
-    0: '''
+    0:'''
     +---+
     |   |
         |
         |
-        | 
         |
-    =====''',
-    1: '''
-    +---+
-    |   |
-    O   |
         |
-        | 
-        |
-    =====''',
-    2: '''
+    ======''',
+    1:'''
     +---+
     |   |
     O   |
-    |   |
-        | 
         |
-    =====''',
-    3: '''
+        |
+        |
+    ======''',
+    2:'''
     +---+
     |   |
     O   |
-    |\  |
-        | 
+    |   |
         |
-    =====''',
-    4: '''
+        |
+    ======''',
+    3:'''
     +---+
     |   |
     O   |
+    |   |
+   /    |
+        |
+    ======''',
+    4:'''
+    +---+
+    |   |
+    O   |
+    |   |
+   / \  |
+        |
+    ======''',
+    5:'''
+    +---+
+    |   |
+    O   |
+    |   |
    /|\  |
-        | 
         |
-    =====''',
-    5: '''
+    ======''',
+    6:'''
     +---+
     |   |
     O   |
+    |   |
    /|\  |
-     \  | 
-        |
-    =====''',
-    6: '''
+   /    |
+    ======''',
+    7:'''
     +---+
     |   |
     O   |
+    |   |
    /|\  |
-   / \  | 
-        |
-    =====''',
+   / \  |
+    ======'''
 }
 
-print("Dobrodosli u igru vjesala")
-print("-------------------------------")
-print()
+def isprintaj_vjesala(zivot):
+    print(vjesalo[zivot])
 
-lista_rijeci = ["python"]
+lista_rijeci = ['Python', 'Algebra', 'Programiranje', 'jabuka', 'AuToMoBIL'] 
 
-trazena_rijec = random.choice(lista_rijeci).upper()
-print("Trazena rijec je slijedeceg oblika:", end=" ")
-for x in trazena_rijec:
-    print("_", end=" ")
+def odaberi_slucajnu_rijec():
+    slucajna_rijec = random.choice(lista_rijeci).upper()
+    print('Ispis is odaber_slucajnu_rijec funkcije')
+    print(slucajna_rijec)
+    return slucajna_rijec
+    # return trazena_rijec
 
-print()
-slova_rijeci = []
+def vjesala():
 
-for x in trazena_rijec:
-    if x not in slova_rijeci:
-        slova_rijeci.append(x)
+    trazena_rijec = odaberi_slucajnu_rijec()
+    print('Print iz vjesala()')
+    print(trazena_rijec)
 
-iskoristena_slova = []
+    for x in trazena_rijec:
+        print(x)
+    
+    isprintaj_vjesala(5)
 
-pokusaj = 0
+vjesala()
 
-while pokusaj < 7 and len(slova_rijeci) > 0:
-    print(f"Iskoristeni pokusaji: {pokusaj}")
-    print(f"Iskoristio si sljedeca slova: {iskoristena_slova}")
-
-    print(vjesalo[pokusaj])
-
-    print("Trenutna rijec: ", end=" ")
-    for slovo in trazena_rijec:
-        if slovo in iskoristena_slova:
-            print(slovo, end=" ")
-        else:
-            print("-", end=" ")
-    print()
-    slovo_igraca = input("Pogodi slovo: ").upper()
-    print()
-
-    if slovo_igraca not in iskoristena_slova:
-        iskoristena_slova.append(slovo_igraca)
-        if slovo in slova_rijeci:
-            print("Uneseno slovo je u rijeci!")
-            slova_rijeci.remove(slovo_igraca)
-        else:
-            print("Slovo nije u rijeci")
-            pokusaj += 1
-    else:
-        print("Ovo slovo je vec uneseno. Pokusaj ponovno!")
