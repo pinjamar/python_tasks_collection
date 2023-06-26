@@ -3,10 +3,10 @@ class Racun:
     Klasa za upravljanje računima
     '''
 
-    def __init__(self, 
+    def __init__(self,
                  racun_broj,
-                 racun_datum_izdavanja, 
-                 racun_stavke, 
+                 racun_datum_izdavanja,
+                 racun_stavke,
                  iznos_pdv):
         self.racun_broj = racun_broj
         self.racun_datum_izdavanja = racun_datum_izdavanja
@@ -15,7 +15,6 @@ class Racun:
         self.racun_ukupan_iznos = 0
 
         self.izracunaj_ukupan_iznos()
-
 
     def izracunaj_ukupan_iznos(self):
         for cijena in self.racun_stavke.values():
@@ -36,15 +35,19 @@ class Racun:
 
         print('\n')
         print('-' * 50)
-        print(f'\n\tIZNOS PDV-a:\t{self.izracunaj_pdv(self.racun_ukupan_iznos)}')
-        print(f'\tUKUPAN IZNOS:\t{self.racun_ukupan_iznos + self.izracunaj_pdv(self.racun_ukupan_iznos)}\n')
+        print(
+            f'\n\tIZNOS PDV-a:\t{self.izracunaj_pdv(self.racun_ukupan_iznos)}')
+        print(
+            f'\tUKUPAN IZNOS:\t{self.racun_ukupan_iznos + self.izracunaj_pdv(self.racun_ukupan_iznos)}\n')
         print('*' * 50)
         print('\n\n')
+
 
 def kreiraj_racun(brojac_racuna, pdv):
     racun_stavke = {}
     racun_broj = f'R-{brojac_racuna}-2023-06'
-    racun_datum_izdavanja = input('Upišite datum izdavanja računa formata "31.05.2023:\t')
+    racun_datum_izdavanja = input(
+        'Upišite datum izdavanja računa formata "31.05.2023:\t')
 
     while True:
         proizvod = input('Upišite naziv proizvoda ')
@@ -55,6 +58,7 @@ def kreiraj_racun(brojac_racuna, pdv):
 
     racun = Racun(racun_broj, racun_datum_izdavanja, racun_stavke, pdv)
     return racun
+
 
 racuni = []
 PDV = 0.25
@@ -75,18 +79,15 @@ for r in racuni:
     r.ispisi_racun()
 
 
+racun1 = Racun()
 
 
+neke_moje_stavke = {'Laptop': 1500.00,
+                    'Torba za laptop': 300.00,
+                    'Monitor': 550.50,
+                    'Python za pocetnike': 23.77}
 
-
-
-
-# neke_moje_stavke = {'Laptop': 1500.00,
-#                 'Torba za laptop': 300.00,
-#                 'Monitor': 550.50,
-#                 'Python za pocetnike': 23.77}
-
-# r1 = Racun('R-1-2023-06', '21.06.2023', neke_moje_stavke, 0.25)
+r1 = Racun('R-1-2023-06', '21.06.2023', neke_moje_stavke, 0.25)
 
 # print(r1.racun_ukupan_iznos)
 
