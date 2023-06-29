@@ -1,0 +1,12 @@
+{
+    "id": 1,
+    "first_name": "Petar",
+    "last_name": "Peri\u0107",
+    "user_name": "pperic",
+    "email": "pperic@gmail.com",
+    "address": {
+        "street": "Ilica 200",
+        "city": "Zagreb",
+        "zip_code": 10000
+    }
+}
