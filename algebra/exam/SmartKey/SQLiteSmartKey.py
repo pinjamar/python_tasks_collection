@@ -18,7 +18,7 @@ update_by_pin = '''UPDATE Users
 
 try:
     conn = sqlite3.connect('SmartKey.db')
-
+    
     cursor = conn.cursor()
     cursor.execute(create_table_query)
     conn.commit()
@@ -29,8 +29,8 @@ try:
              ('Ivan', 'Ljaljic', '4321'),
              ('Kresimir', 'Sarac', '4567'),
              ('Iva', 'Zlomislic', '4444')]
-
-    for user in users:
+    
+    for user in users:    
         cursor.execute(insert_into_query, user)
 
     conn.commit()

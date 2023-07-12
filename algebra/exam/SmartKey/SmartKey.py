@@ -49,23 +49,43 @@
 
 import tkinter as tk
 import sqlite3
-from tkinter import messagebox
+import tkinter.messagebox
 
-# UVIJEK PRVO GLAVNI PROZOR!!!
 root = tk.Tk()
 
-# OVDJE DEFINIRAMO GLOBANE VARIJABLE
-pin = tk.StringVar()
+root.geometry("650x800")
+root.resizable(0, 0)
 
+
+pin = tk.StringVar()
 znak1 = tk.StringVar()
 znak2 = tk.StringVar()
 znak3 = tk.StringVar()
 znak4 = tk.StringVar()
-
 odustani = tk.BooleanVar()
-
-
 # Prostor za funkcije
+
+
+def show_frm_1():
+
+    frm_1.grid_columnconfigure(0, weight=1)
+    frm_1.grid_columnconfigure(1, weight=1)
+    frm_1.grid_columnconfigure(2, weight=1)
+
+    # Kreirajmo label i gumbe za prvi frame
+    lbl_frm1 = tk.Label(frm_1, text='Panel s gumbima', font=('Arial', 10))
+    lbl_frm1.grid(row=0, column=1, padx=10, pady=10)
+
+    btn_pozvoni = tk.Button(frm_1, text='Pozvoni', font=('Arial', 16))
+    btn_pozvoni.grid(row=1, column=0, padx=10, pady=10, sticky='w')
+
+    btn_otkljucaj = tk.Button(frm_1, text='Otkljucaj', font=('Arial', 16))
+    btn_otkljucaj.grid(row=1, column=2, padx=10, pady=10, sticky='e')
+
+    btn_pozvoni.bind("<Button-1>", handle_pozvoni)
+    btn_otkljucaj.bind("<Button-1>", handle_otkljucaj)
+
+    # PARENT WIDGETIMA: frm_2
 
 
 def handle_pozvoni(event):
@@ -75,13 +95,68 @@ def handle_pozvoni(event):
 
 
 def handle_otkljucaj(event):
-    pass
-    # global ent_pin1,....
+    global ent_pin_1, ent_pin_2, ent_pin_3, ent_pin_4
 
-    # TODO
-    # PARENT WIDGETIMA: frm_2
+    frm_2.grid_columnconfigure(0, weight=1)
+    frm_2.grid_columnconfigure(1, weight=1)
+    frm_2.grid_columnconfigure(2, weight=1)
+    frm_2.grid_columnconfigure(3, weight=1)
+    frm_2.grid_columnconfigure(4, weight=50)
 
-    # lbl_pin = ....
+    lbl_pin = tk.Label(frm_2, text="PIN panel").grid(
+        row=0, column=0,  columnspan=5, padx=10, pady=10)
+
+    ent_pin_1 = tk.Entry(frm_2, width=5, state="disabled", textvariable=znak1)
+    ent_pin_1.grid(row=1, column=0, padx=5, pady=5)
+    ent_pin_2 = tk.Entry(frm_2, width=5, state="disabled", textvariable=znak2)
+    ent_pin_2.grid(row=1, column=1, padx=5, pady=5)
+    ent_pin_3 = tk.Entry(frm_2, width=5, state="disabled", textvariable=znak3)
+    ent_pin_3.grid(row=1, column=2, padx=5, pady=5)
+    ent_pin_4 = tk.Entry(frm_2, width=5, state="disabled", textvariable=znak4)
+    ent_pin_4.grid(row=1, column=3, padx=5, pady=5)
+
+    lbl_status = tk.Label(frm_2, text="Status i poruke", font=(
+        'Arial', 10)).grid(row=1, column=4, padx=10, pady=10)
+    lbl_status_messages = tk.Label(frm_2, text="Poruka", font=(
+        'Arial', 16)).grid(row=2, rowspan=3, column=4, padx=10, pady=10)
+
+    btn_dig_1 = tk.Button(frm_2, text="1", width=4)
+    btn_dig_1.grid(row=2, column=0, padx=5, pady=5)
+    btn_dig_1.bind("<Button-1>", lambda i: enter_pin("1"))
+    btn_dig_2 = tk.Button(frm_2, text="2", width=4)
+    btn_dig_2.grid(row=2, column=1, padx=5, pady=5)
+    btn_dig_2.bind("<Button-1>", lambda i: enter_pin("2"))
+    btn_dig_3 = tk.Button(frm_2, text="3", width=4)
+    btn_dig_3.grid(row=2, column=2, padx=5, pady=5)
+    btn_dig_3.bind("<Button-1>", lambda i: enter_pin("3"))
+    btn_dig_4 = tk.Button(frm_2, text="4", width=4)
+    btn_dig_4.grid(row=3, column=0, padx=5, pady=5)
+    btn_dig_4.bind("<Button-1>", lambda i: enter_pin("4"))
+    btn_dig_5 = tk.Button(frm_2, text="5", width=4)
+    btn_dig_5.grid(row=3, column=1, padx=5, pady=5)
+    btn_dig_5.bind("<Button-1>", lambda i: enter_pin("5"))
+    btn_dig_6 = tk.Button(frm_2, text="6", width=4)
+    btn_dig_6.grid(row=3, column=2, padx=5, pady=5)
+    btn_dig_6.bind("<Button-1>", lambda i: enter_pin("6"))
+    btn_dig_7 = tk.Button(frm_2, text="7", width=4)
+    btn_dig_7.grid(row=4, column=0, padx=5, pady=5)
+    btn_dig_7.bind("<Button-1>", lambda i: enter_pin("7"))
+    btn_dig_8 = tk.Button(frm_2, text="8", width=4)
+    btn_dig_8.grid(row=4, column=1, padx=5, pady=5)
+    btn_dig_8.bind("<Button-1>", lambda i: enter_pin("8"))
+    btn_dig_9 = tk.Button(frm_2, text="9", width=4)
+    btn_dig_9.grid(row=4, column=2, padx=5, pady=5)
+    btn_dig_9.bind("<Button-1>", lambda i: enter_pin("9"))
+    btn_dig_none = tk.Button(frm_2, width=4)
+    btn_dig_none.grid(row=5, column=0, padx=5, pady=5)
+    btn_dig_0 = tk.Button(frm_2, text="0", width=4)
+    btn_dig_0.grid(row=5, column=1, padx=5, pady=5)
+    btn_dig_0.bind("<Button-1>", lambda i: enter_pin("0"))
+    btn_dig_C = tk.Button(frm_2, text="C", width=4)
+    btn_dig_C.grid(row=5, column=2, padx=5, pady=5)
+    btn_dig_C.bind("<Button-1>", lambda i: enter_pin("C"))
+
+    # enter_admin_sustav()
 
     # ent_pin1, ent_pin2, ent_pin3, ent_pin4 -> textvariable = znak1, 2, 3, 4
     # HINT: moraju imati state='disabled' da ne može pisati direktno u njih
@@ -95,9 +170,20 @@ def handle_otkljucaj(event):
 
 
 def enter_pin(text):
-
     if text == "C":
         pin.set("")
+        znak1.set("")
+        ent_pin_1.delete(0, tk.END)
+        ent_pin_1.insert(0, znak1)
+        znak2.set("")
+        ent_pin_2.delete(0, tk.END)
+        ent_pin_2.insert(0, znak2)
+        znak3.set("")
+        ent_pin_3.delete(0, tk.END)
+        ent_pin_3.insert(0, znak3)
+        znak4.set("")
+        ent_pin_4.delete(0, tk.END)
+        ent_pin_4.insert(0, znak4)
         return
 
     if len(pin.get()) == 0:
@@ -116,8 +202,9 @@ def enter_pin(text):
         znak4.set(text)
         new_pin = pin.get() + znak4.get()
         pin.set(new_pin)
-        # Nakon što se sve izvrši naša duljina pina će postati 4! Sad želimo preći na novi korak !!
+
     print(pin.get())
+    # Nakon što se sve izvrši naša duljina pina će postati 4! Sad želimo preći na novi korak !!
     # print_message_enter_admin_system(pin)
 
 
@@ -136,17 +223,17 @@ def print_message_enter_admin_system(pin):
     # TODO
     # record = ....
 
-    lbl_greeting_message = tk.Label(frm_status_messages,
+    lbl_greeting_message = tk.Label(frm_2,
                                     text=f'PIN je uspješno unešen.\nDobro došli {record[0]} {record[1]}',
-                                    font=('Segoe UI', 18))
-    lbl_greeting_message.pack()
+                                    font=('Arial', 18))
+    lbl_greeting_message.grid(row=2, rowspan=3, column=4, padx=10, pady=10)
 
     if record[0] == "admin":
-        answer = tk.messagebox.askquestion(title="Ulazak u Admin sustav",
-                                           message='Zelite li pokrenuti sustav administracije?')
+        answer = tkinter.messagebox.askquestion(title="Ulazak u Admin sustav",
+                                                message='Zelite li pokrenuti sustav administracije?')
 
-    # if answer == #TODO
-        # enter_admin_sustav()
+    if answer == 0:  # TODO
+        enter_admin_sustav()
 
 
 def enter_admin_sustav():
@@ -178,7 +265,7 @@ def enter_admin_sustav():
     # ent_pin
     # cbox_aktivan (checkbox widget)
 
-    frame_action_buttons = tk.Frame()
+    frame_action_buttons = tk.Frame(frm_3)
     frame_action_buttons.grid_columnconfigure(0, weight=1)
     frame_action_buttons.grid_columnconfigure(1, weight=1)
     frame_action_buttons.grid_columnconfigure(2, weight=1)
@@ -233,113 +320,20 @@ frm = tk.Frame(root, bd=2, relief=tk.SOLID)
 frm.pack(padx=10, pady=10)
 
 # Kreirajmo tri manja okvira
-frm_1 = tk.Frame(frm, bd=2, relief=tk.SOLID, width=600, height=135)
-frm_1.grid_columnconfigure(0, weight=1)
-frm_1.grid_columnconfigure(1, weight=1)
-frm_1.grid_columnconfigure(2, weight=1)
+frm_1 = tk.Frame(frm, bd=2, relief=tk.SOLID, width=600, height=110)
 frm_1.grid(row=0, column=0, padx=10, pady=10, sticky='news')
+frm_1.grid_propagate(0)
+
+show_frm_1()
 
 frm_2 = tk.Frame(frm, bd=2, relief=tk.SOLID, width=600, height=300)
-frm_2.grid(row=1, column=0, padx=10, pady=10)
+frm_2.grid(row=1, column=0, padx=10, pady=10, sticky='news')
+frm_2.grid_propagate(0)
 
 frm_3 = tk.Frame(frm, bd=2, relief=tk.SOLID, width=600, height=300)
-frm_3.grid(row=2, column=0, padx=10, pady=10)
+frm_3.grid(row=2, column=0, padx=10, pady=10, sticky='news')
+frm_3.grid_propagate(0)
 
-# Kreirajmo label i gumbe za prvi frame
-lbl_frm1 = tk.Label(frm_1, text='Panel s gumbima', font=('Arial', 10))
-lbl_frm1.grid(row=0, column=1, padx=10, pady=10)
-
-btn_pozvoni = tk.Button(frm_1, text='Pozvoni', font=('Arial', 16))
-btn_pozvoni.grid(row=1, column=0, padx=10, pady=10, sticky='w')
-
-btn_otkljucaj = tk.Button(frm_1, text='Otkljucaj', font=('Arial', 16))
-btn_otkljucaj.grid(row=1, column=2, padx=10, pady=10, sticky='e')
-
-btn_pozvoni.bind("<Button-1>", handle_pozvoni)
-btn_otkljucaj.bind("<Button-1>", handle_otkljucaj)
-
-# Kreirajmo label i gumbe za drugi frame
-
-lb2_frm2 = tk.Label(frm_2, text='Panel s gumbima',
-                    font=('Arial', 10))
-lb2_frm2.grid(row=0, column=1, padx=10, pady=10)
-
-pin_1 = tk.Button(frm_2, text='1', width=5, height=2)
-pin_1.grid(row=1, column=0, padx=10, pady=10)
-
-pin_2 = tk.Button(frm_2, text='1', width=5, height=2)
-pin_2.grid(row=1, column=0, padx=10, pady=10)
-
-pin_3 = tk.Button(frm_2, text='1', width=5, height=2)
-pin_3.grid(row=1, column=0, padx=10, pady=10)
-
-pin_4 = tk.Button(frm_2, text='1', width=5, height=2)
-pin_4.grid(row=1, column=0, padx=10, pady=10)
-
-broj_1 = tk.Button(frm_2, text='1', width=5, height=2, command=enter_pin)
-broj_1.grid(row=2, column=0, padx=10, pady=10)
-
-broj_2 = tk.Button(frm_2, text='1', width=5, height=2, command=enter_pin)
-broj_2.grid(row=2, column=1, padx=10, pady=10)
-
-broj_3 = tk.Button(frm_2, text='1', width=5, height=2, command=enter_pin)
-broj_3.grid(row=2, column=2, padx=10, pady=10)
-
-broj_4 = tk.Button(frm_2, text='1', width=5, height=2, command=enter_pin)
-broj_4.grid(row=3, column=0, padx=10, pady=10)
-
-broj_5 = tk.Button(frm_2, text='1', width=5, height=2, command=enter_pin)
-broj_5.grid(row=3, column=1, padx=10, pady=10)
-
-broj_6 = tk.Button(frm_2, text='1', width=5, height=2, command=enter_pin)
-broj_6.grid(row=3, column=2, padx=10, pady=10)
-
-broj_7 = tk.Button(frm_2, text='1', width=5, height=2, command=enter_pin)
-broj_7.grid(row=4, column=0, padx=10, pady=10)
-
-broj_8 = tk.Button(frm_2, text='1', width=5, height=2, command=enter_pin)
-broj_8.grid(row=4, column=1, padx=10, pady=10)
-
-broj_9 = tk.Button(frm_2, text='1', width=5, height=2, command=enter_pin)
-broj_9.grid(row=4, column=2, padx=10, pady=10)
-
-broj_0 = tk.Button(frm_2, text='1', width=5, height=2, command=enter_pin)
-broj_0.grid(row=5, column=1, padx=10, pady=10)
-
-slovo_c = tk.Button(frm_2, text='1', width=5, height=2, command=enter_pin)
-slovo_c.grid(row=5, column=2, padx=10, pady=10)
-
-# Kreirajmo label i gumbe za treci frame
-
-lbl_frm1 = tk.Label(
-    frm_3, text='Upravljanje dodijeljenim ključevima', font=('Arial', 10))
-lbl_frm1.grid(row=0, column=1, padx=10, pady=10)
-
-msg_lista = tk.Message(
-    frm_3, text='Lista imena i prezimena osoba koje imaju digitalni ključ', bd=2, relief=tk.SOLID, font=('Arial', 16))
-msg_lista.grid(row=1, rowspan=5, column=0, padx=10, pady=10, sticky='w')
-
-msg_lista = tk.Message(
-    frm_3, text='Ime', bd=2, relief=tk.SOLID, font=('Arial', 16))
-msg_lista.grid(row=1, column=1, padx=10, pady=10, sticky='w')
-
-msg_lista = tk.Message(
-    frm_3, text='Prezime', bd=2, relief=tk.SOLID, font=('Arial', 16))
-msg_lista.grid(row=2, column=1, padx=10, pady=10, sticky='w')
-
-msg_lista = tk.Message(
-    frm_3, text='PIN (4 broja)', bd=2, relief=tk.SOLID, font=('Arial', 16))
-msg_lista.grid(row=3, column=1, padx=10, pady=10, sticky='w')
-
-msg_lista = tk.Message(
-    frm_3, text='Aktivan', bd=2, relief=tk.SOLID, font=('Arial', 16))
-msg_lista.grid(row=4, column=1, padx=10, pady=10, sticky='w')
-
-btn_otkljucaj = tk.Button(frm_3, text='Otkljucaj', font=('Arial', 16))
-btn_otkljucaj.grid(row=1, column=2, padx=10, pady=10, sticky='e')
-
-btn_pozvoni.bind("<Button-1>", handle_pozvoni)
-btn_otkljucaj.bind("<Button-1>", handle_otkljucaj)
 
 # Započni GUI petlju
 root.mainloop()

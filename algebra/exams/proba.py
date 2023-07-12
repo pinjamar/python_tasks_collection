@@ -11,4 +11,3 @@ odustani.set(tk.TRUE)
 print(odustani.get())
 
 root.mainloop()
-
