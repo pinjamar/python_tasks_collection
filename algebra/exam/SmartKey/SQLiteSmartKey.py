@@ -3,9 +3,10 @@ import sqlite3
 create_table_query = '''CREATE TABLE IF NOT EXISTS Users (
                         ime TEXT,
                         prezime TEXT, 
-                        pin TEXT)'''
+                        pin TEXT,
+                        aktivan BOOLEAN)'''
 
-insert_into_query = '''INSERT INTO Users (ime, prezime, pin)
+insert_into_query = '''INSERT INTO Users (ime, prezime, pin, aktivan
                        VALUES (?,?,?)'''
 
 select_by_pin = '''SELECT * FROM Users WHERE pin=?'''
@@ -18,7 +19,7 @@ update_by_pin = '''UPDATE Users
 
 try:
     conn = sqlite3.connect('SmartKey.db')
-    
+
     cursor = conn.cursor()
     cursor.execute(create_table_query)
     conn.commit()
@@ -28,9 +29,11 @@ try:
              ('Ivan', 'Gracanin', '1234'),
              ('Ivan', 'Ljaljic', '4321'),
              ('Kresimir', 'Sarac', '4567'),
-             ('Iva', 'Zlomislic', '4444')]
-    
-    for user in users:    
+             ('Iva', 'Zlomislic', '4444'),
+             ('Pero', 'Peric', '2222'),
+             ]
+
+    for user in users:
         cursor.execute(insert_into_query, user)
 
     conn.commit()

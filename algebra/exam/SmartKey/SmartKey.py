@@ -62,6 +62,9 @@ znak1 = tk.StringVar()
 znak2 = tk.StringVar()
 znak3 = tk.StringVar()
 znak4 = tk.StringVar()
+ime = tk.StringVar()
+prezime = tk.StringVar()
+pin_new = tk.StringVar()
 odustani = tk.BooleanVar()
 # Prostor za funkcije
 
@@ -85,13 +88,10 @@ def show_frm_1():
     btn_pozvoni.bind("<Button-1>", handle_pozvoni)
     btn_otkljucaj.bind("<Button-1>", handle_otkljucaj)
 
-    # PARENT WIDGETIMA: frm_2
-
 
 def handle_pozvoni(event):
-    pass
-    # TODO
-    # hint MessageBox koji nosi neki info text: 'Zvono je aktivirano!\nNetko će doći otvoriti vrata.
+    tkinter.messagebox.showinfo(
+        message='Zvono je aktivirano!\nNetko će doći otvoriti vrata.')
 
 
 def handle_otkljucaj(event):
@@ -158,36 +158,17 @@ def handle_otkljucaj(event):
 
     # enter_admin_sustav()
 
-    # ent_pin1, ent_pin2, ent_pin3, ent_pin4 -> textvariable = znak1, 2, 3, 4
-    # HINT: moraju imati state='disabled' da ne može pisati direktno u njih
-
-    # btn_0 .... btn_9 -> povezao sam ih s funkcijom enter_pin(text) # text = text u definiciji buttona
-    # btn_c -> samo obriše cijelu do tad uneseni pin - kad se stisne samo treb pin.set(''), pobrisati text iz entry widgeta
-
-    # frm_empty - dodate mu debljinu bordera, relief ...
-
-    # frm_status_messages unutar kojeg ide lbl_status_messages
-
 
 def enter_pin(text):
     if text == "C":
         pin.set("")
         znak1.set("")
-        ent_pin_1.delete(0, tk.END)
-        ent_pin_1.insert(0, znak1)
         znak2.set("")
-        ent_pin_2.delete(0, tk.END)
-        ent_pin_2.insert(0, znak2)
         znak3.set("")
-        ent_pin_3.delete(0, tk.END)
-        ent_pin_3.insert(0, znak3)
         znak4.set("")
-        ent_pin_4.delete(0, tk.END)
-        ent_pin_4.insert(0, znak4)
         return
 
     if len(pin.get()) == 0:
-        # unutar buttona ćemo imati command = enter_pin(text) -> '1' ako kliknemo na btn_1
         znak1.set(text)
         pin.set(znak1.get())
     elif len(pin.get()) == 1:
@@ -202,103 +183,152 @@ def enter_pin(text):
         znak4.set(text)
         new_pin = pin.get() + znak4.get()
         pin.set(new_pin)
-
-    print(pin.get())
-    # Nakon što se sve izvrši naša duljina pina će postati 4! Sad želimo preći na novi korak !!
-    # print_message_enter_admin_system(pin)
+        print_message_enter_admin_system(pin)
+        # Nakon što se sve izvrši naša duljina pina će postati 4! Sad želimo preći na novi korak !!
 
 
 def print_message_enter_admin_system(pin):
     # Želimo se sada povezati na našu SmartKey bazu
     # NAPOMENA: Rekreirajte SQLiteSMartKey.py tako da osim ona tri field, prima još i field aktivan koji je boolean
     conn = sqlite3.connect('SmartKey.db')
+    cursor = conn.cursor()
 
-    # TODO
-    select_by_pin_query = ''
-    # Sada se samo vodite vašim SQLiteSmartKey primjerima (HINT: vrijednost pina pin.get())
+    select_by_pin_query = '''SELECT * FROM Users WHERE pin=?'''
+    cursor.execute(select_by_pin_query, (pin.get(),))
+    record = cursor.fetchone()
 
     # Nakon što se spojimo na bazu, EXECUTEamo query, FETCHONEamo rezultat i spremamo u varijablu record
     # probajte isprintati record da vidite u kojem je obliku
 
-    # TODO
-    # record = ....
+    if record == None:
+        lbl_greeting_message = tk.Label(frm_2,
+                                        text=f'Pogresan PIN!',
+                                        font=('Arial', 18))
+        lbl_greeting_message.grid(row=2, rowspan=3, column=4, padx=10, pady=10)
+        enter_pin("C")
+        return
 
     lbl_greeting_message = tk.Label(frm_2,
                                     text=f'PIN je uspješno unešen.\nDobro došli {record[0]} {record[1]}',
                                     font=('Arial', 18))
     lbl_greeting_message.grid(row=2, rowspan=3, column=4, padx=10, pady=10)
 
-    if record[0] == "admin":
+    if record[0] == "Admin":
         answer = tkinter.messagebox.askquestion(title="Ulazak u Admin sustav",
                                                 message='Zelite li pokrenuti sustav administracije?')
 
-    if answer == 0:  # TODO
+    if answer == "yes":
         enter_admin_sustav()
 
 
 def enter_admin_sustav():
-    # AKO ŽELITE KORISTITI WIDGETE IZ OVE FUNKCIJE
-    # OBAVEZNO DODATI IME WIDGETA U GLOBAL
-    # TODO
-    # global ime_widgeta
 
-    # lbl_kljucevi
-
-    # frm_lista_ljudi
-    # lbl_lista_ljudi
-    # listbox_popis_osoba
-
-    # frm_ime
-    # lbl_ime
-
-    # frm_prezime
-    # lbl_prezime
-
-    # frm_pin
-    # lbl_pin
-
-    # frm_aktivan
-    # lbl_aktivan
-
-    # ent_ime
-    # ent_prezime
-    # ent_pin
     # cbox_aktivan (checkbox widget)
 
+    global ent_ime, ent_prezime, ent_pin, lbox_users
+
+    frm_3.grid_columnconfigure(0, weight=10)
+    frm_3.grid_columnconfigure(1, weight=1)
+    frm_3.grid_columnconfigure(2, weight=1)
+    frm_3.grid_columnconfigure(3, weight=1)
+
+    lbl_admin = tk.Label(frm_3, text="Upravljanje dodijeljenim kljucevima").grid(
+        row=0, column=0,  columnspan=4, padx=10, pady=10)
+
+    conn = sqlite3.connect('SmartKey.db')
+    cursor = conn.cursor()
+    select_all = '''SELECT * FROM Users'''
+    cursor.execute(select_all)
+
+    records = cursor.fetchall()
+
+    lbox_users = tk.Listbox(frm_3)
+    lbox_users.grid(row=1, column=0, rowspan=4)
+    lbox_users.bind("<<ListboxSelect>>", item_selected)
+
+    for record in records:
+        lbox_users.insert("end", f"{record[0]} {record[1]}")
+
+    lbl_ime = tk.Label(frm_3, text="Ime")
+    lbl_ime.grid(row=1, column=1, sticky="e")
+    ent_ime = tk.Entry(frm_3, textvariable=ime)
+    ent_ime.grid(row=1, column=2, padx=5, pady=5)
+
+    lbl_prezime = tk.Label(frm_3, text="Prezime")
+    lbl_prezime.grid(row=2, column=1, sticky="e")
+    ent_prezime = tk.Entry(frm_3, textvariable=prezime)
+    ent_prezime.grid(row=2, column=2, padx=5, pady=5)
+
+    lbl_pin = tk.Label(frm_3, text="PIN (4 broja)")
+    lbl_pin.grid(row=3, column=1, sticky="e")
+    ent_pin = tk.Entry(frm_3, textvariable=pin_new)
+    ent_pin.grid(row=3, column=2, padx=5, pady=5)
+
+    lbl_aktivan = tk.Label(frm_3, text="Aktivan")
+    lbl_aktivan.grid(row=4, column=1, sticky="e")
+    ent_aktivan = tk.Checkbutton(frm_3, variable="")
+    ent_aktivan.grid(row=4, column=2, padx=25, pady=5, sticky="w")
+
     frame_action_buttons = tk.Frame(frm_3)
-    frame_action_buttons.grid_columnconfigure(0, weight=1)
-    frame_action_buttons.grid_columnconfigure(1, weight=1)
-    frame_action_buttons.grid_columnconfigure(2, weight=1)
     frame_action_buttons.grid(row=5, column=2, columnspan=2)
 
     button_spremi = tk.Button(frame_action_buttons,
                               bd=2, relief=tk.SOLID, text='Spremi')
     button_spremi.bind("<Button-1>", handle_spremi)
-    button_spremi.grid(row=0, column=0, padx=10, pady=10, sticky='ew')
+    button_spremi.grid(row=5, column=1, padx=10, pady=10, sticky='ew')
 
     button_odustani = tk.Button(
         frame_action_buttons, bd=2, relief=tk.SOLID, text='Odustani')
     button_odustani.bind("<Button-1>", handle_odustani)
-    button_odustani.grid(row=0, column=1, padx=10, pady=10, sticky='ew')
+    button_odustani.grid(row=5, column=2, padx=10, pady=10, sticky='ew')
 
     button_izbrisi = tk.Button(
         frame_action_buttons, bd=2, relief=tk.SOLID, text='Izbrisi')
     button_izbrisi.bind("<Button-1>", handle_izbrisi)
-    button_izbrisi.grid(row=0, column=2, padx=10, pady=10, sticky='ew')
+    button_izbrisi.grid(row=5, column=3, padx=10, pady=10, sticky='ew')
+
+
+def item_selected(event):
+    temp = lbox_users.get(lbox_users.curselection())
+    temp_list = temp.split()
+    ime.set(temp_list[0])
+    prezime.set(temp_list[1])
+
+    conn = sqlite3.connect('SmartKey.db')
+    cursor = conn.cursor()
+
+    select_by_ime_query = '''SELECT * FROM Users WHERE ime=?'''
+    cursor.execute(select_by_ime_query, (ime.get(),))
+    record = cursor.fetchone()
+
+    pin_new.set(record[2])
+
+    print(ime.get(), prezime.get(), pin_new.get())
 
 
 def handle_spremi(event):
     conn = sqlite3.connect('SmartKey.db')
     cursor = conn.cursor()
 
+    update_by_pin_query = '''UPDATE Users
+                   SET ime=?,
+                       prezime=?,
+                       pin=?
+                    WHERE pin=?'''
+
+    insert_into_query = '''INSERT INTO Users (ime, prezime, pin)
+                       VALUES (?,?,?)'''
+
     if odustani.get():
-        # Insertati ćemo zapis koji ćemo dohvatiti u ovisnosti o kliku na ime i prezime u
-        cursor.execute(insert_into_query)
-        # select boxu
-        # Onda koristimo insert naredbu
+        cursor.execute(insert_into_query, (ime.get(),
+                       prezime.get(), pin_new.get()))
+        lbox_users.insert(item, f"{ime.get()} {prezime.get()}")
     else:
-        cursor.execute(update_query)
-        # Ovdje koristimo update naredbu
+        cursor.execute(update_by_pin_query, (ime.get(),
+                       prezime.get(), pin_new.get(), pin_new.get()))
+        for item in lbox_users.curselection():
+            lbox_users.delete(item)
+            lbox_users.insert(item, f"{ime.get()} {prezime.get()}")
 
     conn.commit()
     cursor.close()
@@ -311,11 +341,27 @@ def handle_odustani(event):
 
 
 def handle_izbrisi(event):
-    # TODO
-    pass
+    conn = sqlite3.connect('SmartKey.db')
+    cursor = conn.cursor()
+
+    temp = lbox_users.get(lbox_users.curselection())
+    temp_list = temp.split()
+    select_by_ime_query = '''SELECT * FROM Users WHERE ime=?'''
+    cursor.execute(select_by_ime_query, (temp_list[0],))
+    record = cursor.fetchone()
+
+    delete_from_query = '''DELETE FROM Users WHERE ime=? AND prezime=? AND pin=?'''
+    cursor.execute(delete_from_query, (temp_list[0], temp_list[1], record[2]))
+
+    lbox_users.delete(lbox_users.curselection())
+    conn.commit()
+    cursor.close()
+
+    conn.close()
 
 
-# Kreirajmo glavni frame s nekom vidljivom granicom
+# MAIN
+
 frm = tk.Frame(root, bd=2, relief=tk.SOLID)
 frm.pack(padx=10, pady=10)
 
@@ -333,7 +379,6 @@ frm_2.grid_propagate(0)
 frm_3 = tk.Frame(frm, bd=2, relief=tk.SOLID, width=600, height=300)
 frm_3.grid(row=2, column=0, padx=10, pady=10, sticky='news')
 frm_3.grid_propagate(0)
-
 
 # Započni GUI petlju
 root.mainloop()
