@@ -19,15 +19,42 @@ class App(ctk.CTk):
         # Entry field
         EntryField(self)
 
+        # QR code
+        QrImage(self)
+
         # running the app
         self.mainloop()
 
 
 class EntryField(ctk.CTkFrame):
     def __init__(self, parent):
-        super().__init__(master=parent)
-        self.place(relx=0.5, rely=0.5, relwidth=0.5,
-                   relheight=0.5, anchor='center')
+        super().__init__(master=parent, corner_radius=20, fg_color='#021FB3')
+        self.place(relx=0.5, rely=1, relwidth=1,
+                   relheight=0.4, anchor='center')
+        # grid layout
+        self.rowconfigure((0, 1), weight=1, uniform='a')
+        self.rowconfigure(0, weight=1, uniform='a')
+        # widgets
+        self.frame = ctk.CTkFrame(self, fg_color='transparent')
+        self.frame.columnconfigure(0, weight=1, uniform='b')
+        self.frame.columnconfigure(1, weight=4, uniform='b')
+        self.frame.columnconfigure(2, weight=2, uniform='b')
+        self.frame.columnconfigure(3, weight=1, uniform='b')
+        self.frame.grid(row=0, column=0)
+
+        entry = ctk.CTkEntry(self.frame, fg_color='#2E54E8',
+                             border_width=0, text_color='white')
+        entry.grid(row=0, column=1, sticky='nsew')
+
+        button = ctk.CTkButton(self.frame, text="save",
+                               fg_color='#2E54E8', hover_color='#4266f1')
+        button.grid(row=0, column=2, sticky='nsew', padx=10)
+
+
+class QrImage(tk.Canvas):
+    def __init__(self, parent):
+        super().__init__(master=parent, background='red')
+        self.place(relx=0.5, rely=0.5, width=400, height=400, anchor='center')
 
 
 App()
