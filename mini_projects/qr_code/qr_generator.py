@@ -17,18 +17,23 @@ class App(ctk.CTk):
 
         # Entry field
         self.entry_string = ctk.StringVar(value='test')
-        # self.entry_string.trace('w', self.create_qr)
+        self.entry_string.trace('w', self.create_qr)
         EntryField(self, self.entry_string)
 
         # QR code
-        raw_image = Image.open(
-            'mini_projects\qr_code\Placeholder.png').resize((400, 400))
-        tk_image = ImageTk.PhotoImage(raw_image)
         self.qr_image = QrImage(self)
-        self.qr_image.update_image(tk_image)
 
         # running the app
         self.mainloop()
+
+    def create_qr(self, *args):
+        current_text = self.entry_string.get()
+        if current_text:
+            self.raw_image = qrcode.make(current_text).resize((400, 400))
+            self.tk_image = ImageTk.PhotoImage(self.raw_image)
+            self.qr_image.update_image(self.tk_image)
+        else:
+            self.qr_image.clear()
 
 
 class EntryField(ctk.CTkFrame):
@@ -63,7 +68,11 @@ class QrImage(tk.Canvas):
         self.place(relx=0.5, rely=0.3, width=400, height=400, anchor='center')
 
     def update_image(self, image_tk):
+        self.clear()
         self.create_image(0, 0, image=image_tk, anchor='nw')
+
+    def clear(self):
+        self.delete('all')
 
 
 App()
