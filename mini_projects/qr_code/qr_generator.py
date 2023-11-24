@@ -18,9 +18,14 @@ class App(ctk.CTk):
         # Entry field
         self.entry_string = ctk.StringVar(value='test')
         self.entry_string.trace('w', self.create_qr)
-        EntryField(self, self.entry_string)
+        EntryField(self, self.entry_string, self.save)
+
+        # event
+        self.bind('<Return>', self.save)
 
         # QR code
+        self.raw_image = None
+        self.tk_image = None
         self.qr_image = QrImage(self)
 
         # running the app
@@ -34,10 +39,19 @@ class App(ctk.CTk):
             self.qr_image.update_image(self.tk_image)
         else:
             self.qr_image.clear()
+            self.raw_image = None
+            self.tk_image = None
+
+    def save(self, event=''):
+        if self.raw_image:
+            file_path = filedialog.asksaveasfilename()
+
+            if file_path:
+                self.raw_image.save(file_path + '.jpg')
 
 
 class EntryField(ctk.CTkFrame):
-    def __init__(self, parent, entry_string):
+    def __init__(self, parent, entry_string, save_func):
         super().__init__(master=parent, corner_radius=20, fg_color='#021FB3')
         self.place(relx=0.5, rely=1, relwidth=1,
                    relheight=0.4, anchor='center')
@@ -56,7 +70,7 @@ class EntryField(ctk.CTkFrame):
                              border_width=0, text_color='white')
         entry.grid(row=0, column=1, sticky='nsew')
 
-        button = ctk.CTkButton(self.frame, text="Save",
+        button = ctk.CTkButton(self.frame, command=save_func, text="Save",
                                fg_color='#2E54E8', hover_color='#4266f1')
         button.grid(row=0, column=2, sticky='nsew', padx=10)
 
