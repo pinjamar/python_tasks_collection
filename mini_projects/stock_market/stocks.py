@@ -1,6 +1,9 @@
 import customtkinter as ctk
 from settings import *
 
+import yfinance as yf
+from datetime import datetime
+
 try:
     from ctypes import windll, byref, sizeof, c_int
 except:
@@ -21,7 +24,21 @@ class App(ctk.CTk):
         # widgets
         InputPanel(self, self.input_string, self.time_string)
 
+        # event
+        self.bind('<Return>', self.input_handler)
+
         self.mainloop()
+
+    def input_handler(self, event=None):
+        ticker = yf.Ticker(self.input_string.get())
+        start = datetime(1950, 1, 1)
+        end = datetime.today()
+
+        self.max = ticker.history(start=start, end=end, period='1d')
+        self.year = self.max.iloc[-260:]
+        self.six_months = self.max.iloc[-130:]
+        self.one_month = self.max.iloc[-22:]
+        self.one_week = self.max.iloc[-5:]
 
     def title_bar_color(self):
         try:
