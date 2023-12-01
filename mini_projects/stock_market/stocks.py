@@ -3,6 +3,8 @@ from settings import *
 
 import yfinance as yf
 from datetime import datetime
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 try:
     from ctypes import windll, byref, sizeof, c_int
@@ -22,12 +24,17 @@ class App(ctk.CTk):
         self.time_string = ctk.StringVar(value=TIME_OPTIONS[0])
 
         # widgets
+        self.graph_panel = None
         InputPanel(self, self.input_string, self.time_string)
 
         # event
         self.bind('<Return>', self.input_handler)
 
         self.mainloop()
+
+    def create_graph(self, *args):
+
+        self.graph_panel = GraphPanel(self, self.max)
 
     def input_handler(self, event=None):
         ticker = yf.Ticker(self.input_string.get())
@@ -39,6 +46,8 @@ class App(ctk.CTk):
         self.six_months = self.max.iloc[-130:]
         self.one_month = self.max.iloc[-22:]
         self.one_week = self.max.iloc[-5:]
+
+        self.create_graph()
 
     def title_bar_color(self):
         try:
@@ -85,6 +94,13 @@ class TextButton(ctk.CTkLabel):
 
     def unselect(self):
         self.configure(text_color=TEXT_COLOR)
+
+
+class GraphPanel(ctk.CTkFrame):
+    def __init__(self, parent, data):
+        super().__init__(master=parent, fg_color=BG_COLOR)
+        self.pack(expand=True, fill='both')
+        print(data)
 
 
 App()
