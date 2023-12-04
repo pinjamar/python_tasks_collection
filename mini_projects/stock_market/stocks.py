@@ -100,7 +100,15 @@ class GraphPanel(ctk.CTkFrame):
     def __init__(self, parent, data):
         super().__init__(master=parent, fg_color=BG_COLOR)
         self.pack(expand=True, fill='both')
-        print(data)
+
+        figure = plt.Figure()
+        ax = figure.add_subplot(111)
+
+        # graph
+        ax.plot(data['Close'])
+
+        figure_widget = FigureCanvasTkAgg(figure, master=self)
+        figure_widget.get_tk_widget().pack(fill='both', expand=True)
 
 
 App()
