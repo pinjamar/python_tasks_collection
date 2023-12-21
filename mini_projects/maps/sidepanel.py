@@ -3,12 +3,58 @@ from settings import *
 from PIL import Image
 
 class SidePanel(ctk.CTkFrame):
-	def __init__(self, parent, set_style):
+	def __init__(self, parent, set_style, update_map):
 		super().__init__(master = parent, fg_color = SIDE_PANEL_BG)
 		self.grid(row = 0, column = 0, sticky = 'nsew')
 
 		# widgets 
 		ViewButtons(self, set_style)
+		self.history_frame = HistoryFrame(self, update_map)
+
+class HistoryFrame(ctk.CTkScrollableFrame):
+	def __init__(self, parent, update_map):
+		super().__init__(master = parent)
+		self.pack(expand = True, fill = 'both', padx = 5, pady = 5)
+		self.font = ctk.CTkFont(family = TEXT_FONT, size = TEXT_SIZE)
+		self.update_map = update_map
+
+	def add_location_entry(self, location):
+		HistoryItem(self, location, self.font, self.update_map)
+
+class HistoryItem(ctk.CTkFrame):
+	def __init__(self, parent, location, font, update_map):
+		super().__init__(master = parent)
+		self.pack(fill = 'x')
+
+		# data 
+		self.address = location.address
+		town = self.address.split(',')[0]
+		country = self.address.split(',')[-1]
+		if town == country:
+			address_string = town
+		else:
+			address_string = f'{town}, {country}'
+
+		# widgets 
+		ctk.CTkButton(
+			self, 
+			command = lambda: update_map(self.address),
+			text = address_string, 
+			font = font, 
+			anchor = 'w', 
+			fg_color = 'transparent', 
+			hover_color = HISTORY_HOVER_COLOR, 
+			text_color = TEXT_COLOR).pack(side = 'left')
+		ctk.CTkButton(
+			self,
+			command = lambda: self.pack_forget(), 
+			text = 'x', 
+			font = font, 
+			anchor = 'e', 
+			fg_color = 'transparent',
+			hover_color = HISTORY_HOVER_COLOR, 
+			width = 10,
+			text_color = TEXT_COLOR).pack(side = 'right')
 
 class ViewButtons(ctk.CTkFrame):
 	def __init__(self, parent, set_style):

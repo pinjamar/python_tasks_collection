@@ -23,7 +23,7 @@ class App(ctk.CTk):
 
 		# widgets 
 		self.map_widget = MapWidget(self, self.input_string, self.submit_location)
-		self.side_panel = SidePanel(self, self.map_widget.set_style)
+		self.side_panel = SidePanel(self, self.map_widget.set_style, self.map_widget.set_address)
 
 		self.mainloop()
 
@@ -34,8 +34,8 @@ class App(ctk.CTk):
 
 		# update map
 		if location:
-			self.map_widgt.set_address(location.address)
-
+			self.map_widget.set_address(location.address)
+			self.side_panel.history_frame.add_location_entry(location)
 			# clear the input
 			self.input_string.set('')
 		else:
