@@ -1,5 +1,6 @@
 import customtkinter as ctk
 from image_widgets import *
+from PIL import Image, ImageTk
 
 class App(ctk.CTk):
 	def __init__(self):
@@ -17,12 +18,21 @@ class App(ctk.CTk):
 		self.columnconfigure(1, weight = 6)
 
 		# widgets 
-		ImageImport(self, self.import_image)
+		self.image_import = ImageImport(self, self.import_image)
 
 		# run
 		self.mainloop()
 
 	def import_image(self, path):
-		print(path)
+		self.image = Image.open(path)
+		self.image_tk = ImageTk.PhotoImage(self.image)
+
+		self.image_import.grid_forget()
+		self.image_output = ImageOutput(self)
+
+		self.resize_image()
+
+	def resize_image(self):
+		self.image_output.create_image(0,0,image = self.image_tk)
 
 App()
