@@ -30,6 +30,15 @@ class App(ctk.CTk):
 
 		self.image_import.grid_forget()
 		self.image_output = ImageOutput(self, self.resize_image)
+		self.close_button = CloseOutput(self, self.close_edit)
+
+	def close_edit(self):
+		# exercise
+		# hide the image and the close button
+		self.image_output.grid_forget()
+		self.close_button.place_forget()
+		# recreate the import button
+		self.image_import = ImageImport(self, self.import_image)
 
 	def resize_image(self, event):
 
@@ -41,7 +50,6 @@ class App(ctk.CTk):
 			image_height = int(event.height)
 			image_width = int(image_height * self.image_ratio)
 		else: # canvas is taller than the image
-			# exercise: figure out these 2 numbers
 			image_width = int(event.width)
 			image_height = int(image_width / self.image_ratio)
 
