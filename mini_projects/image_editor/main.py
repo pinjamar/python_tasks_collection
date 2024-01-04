@@ -1,6 +1,7 @@
 import customtkinter as ctk
 from image_widgets import *
 from PIL import Image, ImageTk
+from menu import Menu
 
 class App(ctk.CTk):
 	def __init__(self):
@@ -14,8 +15,8 @@ class App(ctk.CTk):
 
 		# layout 
 		self.rowconfigure(0, weight = 1)
-		self.columnconfigure(0, weight = 2)
-		self.columnconfigure(1, weight = 6)
+		self.columnconfigure(0, weight = 2, uniform = 'a')
+		self.columnconfigure(1, weight = 6, uniform = 'a')
 
 		# widgets 
 		self.image_import = ImageImport(self, self.import_image)
@@ -31,13 +32,12 @@ class App(ctk.CTk):
 		self.image_import.grid_forget()
 		self.image_output = ImageOutput(self, self.resize_image)
 		self.close_button = CloseOutput(self, self.close_edit)
+		self.menu = Menu(self)
 
 	def close_edit(self):
-		# exercise
-		# hide the image and the close button
 		self.image_output.grid_forget()
 		self.close_button.place_forget()
-		# recreate the import button
+		self.menu.grid_forget()
 		self.image_import = ImageImport(self, self.import_image)
 
 	def resize_image(self, event):
