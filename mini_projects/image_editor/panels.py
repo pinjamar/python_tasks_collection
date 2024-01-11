@@ -28,7 +28,6 @@ class SliderPanel(Panel):
 	def update_text(self, value):
 		self.num_label.configure(text = f'{round(value, 2)}')
 
-
 class SegmentedPanel(Panel):
 	def __init__(self, parent, text, data_var, options):
 		super().__init__(parent = parent)
