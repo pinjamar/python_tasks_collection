@@ -13,9 +13,13 @@ except:
 	pass
 
 class App(ctk.CTk):
-	def __init__(self):
+	def __init__(self, current_data, forecast_data, city, country):
 
-		self.color = WEATHER_DATA['Clear']
+		# data 
+		self.current_data = current_data
+		self.forecast_data = forecast_data
+		self.location = {'city': city, 'country': country}
+		self.color = WEATHER_DATA[current_data['weather']]
 
 		super().__init__(fg_color = self.color['main'])
 		self.title_bar_color(self.color['title'])
@@ -25,7 +29,7 @@ class App(ctk.CTk):
 		self.iconbitmap('empty.ico')
 
 		# start widget
-		self.widget = SmallWidget(self)
+		self.widget = SmallWidget(self, self.current_data, self.location, self.color)
 
 		# states 
 		self.height_break = 600
@@ -94,5 +98,4 @@ if __name__ == '__main__':
 	# weather information
 	current_data = get_weather(latitude, longitude, 'metric', 'today')
 	forecast_data = get_weather(latitude, longitude, 'metric', 'forecast')
-	print(forecast_data)
-	App()
+	App(current_data = current_data, forecast_data = forecast_data, city = city, country = country)
