@@ -76,7 +76,11 @@ class App(ctk.CTk):
 
 		# tall widget
 		if self.full_height_bool.get() and not self.full_width_bool.get():
-			self.widget = TallWidget(self)
+			self.widget = TallWidget(self,
+				current_data = self.current_data,
+				forecast_data = self.forecast_data,
+				location = self.location,
+				color = self.color)
 
 		# wide widget
 		if not self.full_height_bool.get() and self.full_width_bool.get():
